@@ -1,4 +1,8 @@
 from elements.constant import *
+from particles import particles as Part
+import measure.measure as Mens
+
+
 elemwtons = [
     None,
     '1s1',
@@ -45,28 +49,29 @@ class Atom():
         self.neutrons = n
         self.setElectConfig(e)
         self.setValence()
+        self.setMass()
     
     # esse trecho distribui os eletrons nos Nives (K,L,M,N,O,P,Q)
     def setElectConfig(self, electrons):
-        Ks = (K, s)
-        Ls = (L, s)
-        Lp = (L, p)
-        Ms = (M, s)
-        Mp = (M, p)
-        Md = (M, d)
-        Ns = (N, s)
-        Nd = (N, d)
-        Np = (N, p)
-        Nf = (N, f)
-        Os = (O, s)
-        Op = (O, p)
-        Od = (O, d)
-        Of = (O, f)
-        Ps = (P, s)
-        Pp = (P, p)
-        Pd = (P, d)
-        Qs = (Q, s)
-        Qp = (Q, p)
+        Ks = ('K', 's')
+        Ls = ('L', 's')
+        Lp = ('L', 'p')
+        Ms = ('M', 's')
+        Mp = ('M', 'p')
+        Md = ('M', 'd')
+        Ns = ('N', 's')
+        Nd = ('N', 'd')
+        Np = ('N', 'p')
+        Nf = ('N', 'f')
+        Os = ('O', 's')
+        Op = ('O', 'p')
+        Od = ('O', 'd')
+        Of = ('O', 'f')
+        Ps = ('P', 's')
+        Pp = ('P', 'p')
+        Pd = ('P', 'd')
+        Qs = ('Q', 's')
+        Qp = ('Q', 'p')
 
         order = [
             [Ks],
@@ -164,7 +169,16 @@ class Atom():
         self.valence = maxElectronNumber
         self.lastLavel = lastLevel
 
+    def setMass(self):
+        massElect = sum(self.subLevels.values())*Part.Electron.mass[0]
+        massProton = self.protons*Part.Proton.mass[0]
+        massNeutron = self.neutrons*Part.Neutron.mass[0]
 
+
+        self.mass =(massNeutron+massProton+massElect)/Mens.Dalton().unitValue[0],Mens.Dalton().unit
+        self.massG = Mens.toBase(((massNeutron+massProton+massElect),'g','K'))
+        #self.mass = P.Electron
     # criação do atomo ATOMO(numero de eletrons, numero de protons, numero de neutrons)
 
-
+C = Atom('carbon',92,92,145)
+print(C.massG)
